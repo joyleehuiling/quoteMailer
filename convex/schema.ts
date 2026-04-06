@@ -4,17 +4,16 @@ import { v } from "convex/values";
 export default defineSchema({
   projects: defineTable({
     name: v.string(),
-    description: v.optional(v.string()),
+    code: v.string(),
     clientName: v.string(),
-    status: v.union(v.literal("active"), v.literal("completed"), v.literal("archived")),
-    createdAt: v.number(),
-  }),
+    isActive: v.boolean(),
+  }).index("by_isActive", ["isActive"]),
 
   contacts: defineTable({
     projectId: v.id("projects"),
     name: v.string(),
     email: v.string(),
-    role: v.optional(v.string()),``
+    role: v.optional(v.string()),
     company: v.optional(v.string()),
     createdAt: v.number(),
   }).index("by_project", ["projectId"]),
@@ -49,7 +48,7 @@ export default defineSchema({
     totalAmount: v.number(),
     currency: v.string(),
     notes: v.optional(v.string()),
-    createdAt: v.number(),
+    createdBy: v.string(),
   })
     .index("by_project", ["projectId"])
     .index("by_status", ["status"]),

@@ -13,6 +13,19 @@ export const list = query({
 	},
 });
 
+// Seed a test project — run once from dashboard, then delete.
+export const seed = mutation({
+	args: {},
+	handler: async (ctx) => {
+		return await ctx.db.insert("projects", {
+			name: "Jalan Ampang Tower",
+			code: "PRJ-2024-001",
+			clientName: "ABC Consultants Sdn Bhd",
+			isActive: true,
+		});
+	},
+});
+
 // Creates a new project, active by default.
 export const create = mutation({
 	args: {
