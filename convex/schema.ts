@@ -4,11 +4,10 @@ import { v } from "convex/values";
 export default defineSchema({
   projects: defineTable({
     name: v.string(),
-    description: v.optional(v.string()),
+    code: v.string(),
     clientName: v.string(),
-    status: v.union(v.literal("active"), v.literal("completed"), v.literal("archived")),
-    createdAt: v.number(),
-  }),
+    isActive: v.boolean(),
+  }).index("by_isActive", ["isActive"]),
 
   contacts: defineTable({
     projectId: v.id("projects"),
@@ -31,11 +30,6 @@ export default defineSchema({
     projectId: v.id("projects"),
     quoteNumber: v.string(),
     title: v.string(),
-    status: v.union(
-      v.literal("draft"),
-      v.literal("finalised"),
-      v.literal("sent")
-    ),
     lineItems: v.array(
       v.object({
         description: v.string(),
@@ -47,8 +41,13 @@ export default defineSchema({
     ),
     totalAmount: v.number(),
     currency: v.string(),
+    status: v.union(
+      v.literal("draft"),
+      v.literal("sent"),
+      v.literal("finalised")
+    ),
     notes: v.optional(v.string()),
-    createdAt: v.number(),
+    createdBy: v.string(),
   })
     .index("by_project", ["projectId"])
     .index("by_status", ["status"]),
