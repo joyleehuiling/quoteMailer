@@ -59,12 +59,27 @@ export const create = mutation({
 	},
 });
 
+// Returns all quotations for a given project, newest first.
+export const listByProject = query({
+	args: {
+		projectId: v.id("projects"),
+	},
+	handler: async (ctx, args) => {
+		return await ctx.db
+			.query("quotations")
+			.withIndex("by_project", (q) => q.eq("projectId", args.projectId))
+			.order("desc")
+			.collect();
+	},
+});
+
 // Updates the status of a quotation.
 export const updateStatus = mutation({
 	args: {
 		id: v.id("quotations"),
 		status: v.union(
 			v.literal("draft"),
+			v.literal("sending"),
 			v.literal("sent"),
 			v.literal("finalised")
 		),
