@@ -15,6 +15,7 @@ export default defineSchema({
     email: v.string(),
     role: v.optional(v.string()),
     company: v.optional(v.string()),
+    isDefault: v.optional(v.boolean()),
     createdAt: v.number(),
   }).index("by_project", ["projectId"]),
 

@@ -11,6 +11,11 @@
 
 	const navLinks = [
 		{
+			href: '/projects',
+			label: 'Projects',
+			icon: 'folder'
+		},
+		{
 			href: '/quotes',
 			label: 'Quotes',
 			icon: 'document'
@@ -24,11 +29,6 @@
 			href: '/sent',
 			label: 'Sent',
 			icon: 'paper-plane'
-		},
-		{
-			href: '/settings/contacts',
-			label: 'Contacts',
-			icon: 'people'
 		},
 		{
 			href: '/settings/templates',
@@ -126,6 +126,19 @@
 							<circle cx="9" cy="7" r="4" />
 							<path d="M23 21v-2a4 4 0 0 0-3-3.87" />
 							<path d="M16 3.13a4 4 0 0 1 0 7.75" />
+						</svg>
+					{:else if link.icon === 'folder'}
+						<svg
+							class="h-4 w-4 flex-shrink-0"
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
 						</svg>
 					{:else if link.icon === 'template'}
 						<svg

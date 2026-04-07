@@ -1,14 +1,18 @@
 <script lang="ts">
 	import { useQuery, useConvexClient } from 'convex-svelte';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/state'; // [Svelte 5] $app/state replaces $app/stores
 	import { api } from '../../../../convex/_generated/api';
 	import type { Id } from '../../../../convex/_generated/dataModel';
 
 	const projects = useQuery(api.projects.list, () => ({}));
 	const client = useConvexClient();
 
+	// Read projectId from URL query param (e.g. /quotes/new?projectId=abc)
+	const urlProjectId = page.url.searchParams.get('projectId') ?? ''; // [Svelte 5] page is a reactive object in Svelte 5
+
 	// Form fields
-	let projectId = $state('');
+	let projectId = $state(urlProjectId); // pre-select if URL param present
 	let quoteNumber = $state('');
 	let title = $state('');
 	let createdBy = $state('');
@@ -86,7 +90,8 @@
 				<select
 					id="project"
 					bind:value={projectId}
-					class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+					disabled={!!urlProjectId}
+					class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500"
 				>
 					<option value="">
 						{projects.isLoading ? 'Loading...' : '— Select a project —'}
@@ -162,7 +167,8 @@
 			</div>
 		</div>
 
-		<!-- Line items -->
+		<!-- Line items and submit — only shown once a project is selected -->
+		{#if projectId}
 		<p class="mb-2 mt-6 text-sm font-semibold text-gray-700">Line Items</p>
 		<div class="overflow-hidden rounded border border-gray-200">
 			<table class="w-full text-sm">
@@ -258,5 +264,6 @@
 				<p class="ml-4 text-sm text-red-600">{error}</p>
 			{/if}
 		</div>
+		{/if}
 	</form>
 </div>
